@@ -52,7 +52,7 @@ describe('Registrations API', () => {
       expect(res.body.registration).toBeDefined();
     });
 
-    it('should expose capacity limit issue under concurrent requests', async () => {
+    it('should enforce capacity limit under concurrent requests', async () => {
       const organizer = await User.create({
         name: 'Organizer',
         email: 'organizer2@example.com',
@@ -99,22 +99,29 @@ describe('Registrations API', () => {
         organizer: organizer._id
       });
 
-      const [res1, res2] = await Promise.allSettled([
-        request(app)
-          .post(`/api/registrations/${event._id}/register`)
-          .set('Authorization', `Bearer ${login1.body.token}`),
+      
 
-        request(app)
-          .post(`/api/registrations/${event._id}/register`)
-          .set('Authorization', `Bearer ${login2.body.token}`)
-      ]);
+     const [res1, res2] = await Promise.allSettled([
+  request(app)
+    .post(`/api/registrations/${event._id}/register`)
+    .set('Authorization', `Bearer ${login1.body.token}`),
 
-      const registrations = await Registration.find({
-        event: event._id
-      });
+  request(app)
+    .post(`/api/registrations/${event._id}/register`)
+    .set('Authorization', `Bearer ${login2.body.token}`)
+]);
 
-      // This test intentionally exposes the current race-condition gap
-      expect(registrations.length).toBeGreaterThan(1);
+const registrations = await Registration.find({
+  event: event._id
+});
+
+const successResponses = [res1, res2].filter(
+  r => r.value?.statusCode === 201
+);
+
+expect(successResponses.length).toBe(1);
+
+expect(registrations.length).toBe(1);
     });
   });
 });

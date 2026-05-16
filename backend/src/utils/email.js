@@ -14,17 +14,21 @@ const transporter = nodemailer.createTransport({
 });
 
 // Verify connection configuration
-transporter.verify(function (error, success) {
-  if (error) {
-    console.warn("Transporter verification warning:", error.message);
-    if (error.code === 'EAUTH') {
-      // This is expected if env vars are missing
-      console.warn("  -> Email functionality will not work until SMTP_USER and SMTP_PASS are set in .env");
+if (process.env.NODE_ENV !== 'test') {
+  transporter.verify(function (error, success) {
+    if (error) {
+      console.warn("Transporter verification warning:", error.message);
+
+      if (error.code === 'EAUTH') {
+        console.warn(
+          "  -> Email functionality will not work until SMTP_USER and SMTP_PASS are set in .env"
+        );
+      }
+    } else {
+      console.log("Email server is ready.");
     }
-  } else {
-    console.log("Email server is ready.");
-  }
-});
+  });
+}
 
 export async function sendEmail({ to, subject, html, text, attachments }) {
   if (!authConfig) {

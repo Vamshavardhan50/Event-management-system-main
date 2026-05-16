@@ -10,8 +10,10 @@ export const signup = async (req, res) => {
     const token = generateJwtToken({ id: user._id, role: user.role, name: user.name });
     res.status(201).json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  console.error("SIGNUP ERROR:", err);
+
+  res.status(500).json({ message: err.message });
+}
 };
 
 export const login = async (req, res) => {
@@ -25,8 +27,10 @@ export const login = async (req, res) => {
     const token = generateJwtToken({ id: user._id, role: user.role, name: user.name });
     res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  console.error("LOGIN ERROR:", err);
+
+  res.status(500).json({ message: err.message });
+}
 };
 
 export const me = async (req, res) => {

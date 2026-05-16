@@ -1,9 +1,7 @@
-import Registration from '../models/Registration.js';
 import Event from '../models/Event.js';
+import Registration from '../models/Registration.js';
 import { generateQRCodeDataUrl } from '../utils/qrcode.js';
 import { sendEmail } from '../utils/email.js';
-import { createObjectCsvWriter } from 'csv-writer';
-import path from 'path';
 
 export const registerForEvent = async (req, res) => {
   try {
@@ -187,17 +185,31 @@ export const myRegistrations = async (req, res) => {
 
   }
 };
-
-export const participantsForEvent = async (req, res) => {
+export const checkInParticipant = async (req, res) => {
   try {
-    const regs = await Registration.find({ event: req.params.id }).populate('user', 'name email');
-    res.json({ participants: regs });
+    const registration = await Registration.findById(req.params.id);
+
+    if (!registration) {
+      return res.status(404).json({
+        message: 'Registration not found'
+      });
+    }
+
+    registration.checkedIn = true;
+    await registration.save();
+
+    res.status(200).json({
+      message: 'Participant checked in successfully',
+      registration
+    });
+
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      message: err.message
+    });
   }
 };
-
-export const checkInParticipant = async (req, res) => {
+export const checkRegistrationStatus = async (req, res) => {
   try {
 
     const status =
@@ -244,29 +256,23 @@ export const checkInParticipant = async (req, res) => {
 
   }
 };
-
 export const exportParticipantsCsv = async (req, res) => {
   try {
-    const regs = await Registration.find({ event: req.params.id }).populate('user', 'name email');
-    const rows = regs.map(r => ({ name: r.user?.name || '', email: r.user?.email || '', status: r.status, registeredAt: r.createdAt }));
-    const filePath = path.join(process.cwd(), `participants-${req.params.id}.csv`);
-    const csvWriter = createObjectCsvWriter({
-      path: filePath,
-      header: [
-        { id: 'name', title: 'Name' },
-        { id: 'email', title: 'Email' },
-        { id: 'status', title: 'Status' },
-        { id: 'registeredAt', title: 'Registered At' },
-      ],
+    const registrations = await Registration.find({
+      event: req.params.id
+    }).populate('user', 'name email');
+
+    res.status(200).json({
+      participants: registrations
     });
-    await csvWriter.writeRecords(rows);
-    res.download(filePath);
+
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      message: err.message
+    });
   }
 };
-
-export const checkRegistrationStatus = async (req, res) => {
+export const myRegistrations = async (req, res) => {
   try {
 
     const registration =
@@ -294,6 +300,11 @@ export const checkRegistrationStatus = async (req, res) => {
 
   }
 };
+export const participantsForEvent = async (req, res) => {
+  try {
+    const registrations = await Registration.find({
+      event: req.params.id
+    }).populate('user', 'name email');
 
 // promoting from waitlist to register
 export const promoteFromWaitlist = async (eventId) => {
@@ -343,3 +354,9 @@ export const promoteFromWaitlist = async (eventId) => {
 
 
 
+  } catch (err) {
+    res.status(500).json({
+      message: err.message
+    });
+  }
+};

@@ -8,6 +8,7 @@ const eventSchema = new mongoose.Schema(
     date: { type: Date, required: true },
     location: { type: String, required: true },
     capacity: { type: Number, default: 0 },
+    registeredCount: { type: Number, default: 0 },
     organizer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     posterUrl: { type: String },
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },

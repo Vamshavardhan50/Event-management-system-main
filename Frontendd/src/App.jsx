@@ -1,25 +1,10 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
-import "./index.css";
-import Footer from "./components/mvpblocks/footer-standard";
-import Header2 from "./components/mvpblocks/header-2";
-import Home from "./pages/Home";
-} from "react-router-dom";
-
-import "./index.css";
-
-import { Toaster } from "react-hot-toast";
-
-import Footer from "./components/mvpblocks/footer-standard";
-import Header2 from "./components/mvpblocks/header-2";
-
-import Home from "./pages/Home";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
+import "./index.css";
+import Footer from "./components/mvpblocks/footer-standard";
+import Header2 from "./components/mvpblocks/header-2";
+import Home from "./pages/Home";
 import Features from "./pages/Features";
 import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
@@ -28,24 +13,18 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import Profile from "./pages/Profile";
-import DashboardLayout from "./components/DashboardLayout";
-import Profile from "./pages/Profile";
 import CustomerDashboard from "./pages/dashboard/CustomerDashboard";
 import OrganizerDashboard from "./pages/dashboard/OrganizerDashboard";
 import CreateEvent from "./pages/dashboard/CreateEvent";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import ThankYou from "./pages/ThankYou";
 import { useAuth } from "./context/AuthContext";
-
-import { useAuth } from "./context/AuthContext";
-
 import ScrollToTop from "./components/ui/ScrollToTop";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
 
-  if (loading)
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -72,12 +51,12 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    if(darkMode){
+    if (darkMode) {
       document.documentElement.classList.add("dark");
-    }else{
+    } else {
       document.documentElement.classList.remove("dark");
-    } 
-  },[darkMode]);
+    }
+  }, [darkMode]);
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -110,7 +89,7 @@ const App = () => {
 
       <div className="min-h-screen flex flex-col">
         {/* Header */}
-        <Header2 darkMode={darkMode} setDarkMode={setDarkMode} />  
+        <Header2 darkMode={darkMode} setDarkMode={setDarkMode} />
 
         <main className="flex-grow">
           <Routes>
@@ -124,16 +103,6 @@ const App = () => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/thank-you" element={<ThankYou />} />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Protected Profile Route */}
             <Route
               path="/profile"
               element={
@@ -205,4 +174,4 @@ const App = () => {
   );
 };
 
-niexport default App;
+export default App;

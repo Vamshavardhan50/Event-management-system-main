@@ -5,18 +5,12 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./index.css";
-import Footer from "./components/mvpblocks/footer-standard";
-import Header2 from "./components/mvpblocks/header-2";
-import Home from "./pages/Home";
-} from "react-router-dom";
-
-import "./index.css";
-
 import { Toaster } from "react-hot-toast";
-import "./index.css";
 import Footer from "./components/mvpblocks/footer-standard";
 import Header2 from "./components/mvpblocks/header-2";
+import ScrollToTop from "./components/ui/ScrollToTop";
 import Home from "./pages/Home";
 import Features from "./pages/Features";
 import Pricing from "./pages/Pricing";
@@ -29,16 +23,12 @@ import ForgotPassword from "./pages/ForgotPassword";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import DashboardLayout from "./components/DashboardLayout";
-import Profile from "./pages/Profile";
 import CustomerDashboard from "./pages/dashboard/CustomerDashboard";
 import OrganizerDashboard from "./pages/dashboard/OrganizerDashboard";
 import CreateEvent from "./pages/dashboard/CreateEvent";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import ThankYou from "./pages/ThankYou";
 import { useAuth } from "./context/AuthContext";
-
-import { useAuth } from "./context/AuthContext";
-import ScrollToTop from "./components/ui/ScrollToTop";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -195,10 +185,6 @@ const App = () => {
 
             {/* Fallback to 404 */}
             <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-            {/* Fallback Route */}
-            <Route path="*" element={<Home />} />
           </Routes>
         </main>
 

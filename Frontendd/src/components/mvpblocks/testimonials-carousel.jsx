@@ -63,22 +63,19 @@ export default function TestimonialsCarousel({
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Duplicate items to create a seamless infinite loop
   const duplicatedTestimonials = [...testimonials, ...testimonials];
 
   return (
     <section
       className={cn(
         "relative py-24 bg-black border-t border-zinc-800 overflow-hidden",
-        className,
+        className
       )}
     >
-      {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] translate-y-1/2"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] -translate-y-1/2" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] translate-y-1/2" />
 
-        {/* Moving dot grid */}
         <motion.div
           className="absolute inset-0 z-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:32px_32px]"
           animate={{
@@ -104,19 +101,6 @@ export default function TestimonialsCarousel({
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="relative mb-12 text-center md:mb-16"
-        >
-          <h1 className="text-foreground mb-4 text-3xl font-bold md:text-5xl lg:text-6xl">
-            {title}
-          </h1>
-
-          <motion.p
-            className="text-muted-foreground mx-auto max-w-2xl text-base md:text-lg"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            viewport={{ once: true }}
-          >
           className="mb-16 text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
@@ -128,10 +112,9 @@ export default function TestimonialsCarousel({
         </motion.div>
       </div>
 
-      <div className="relative w-full max-w-full mx-auto overflow-hidden">
-        {/* Left/Right fading masks for a smooth fade-in/out effect */}
-        <div className="absolute inset-y-0 left-0 w-1/6 md:w-1/4 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
-        <div className="absolute inset-y-0 right-0 w-1/6 md:w-1/4 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+      <div className="relative w-full max-w-[100vw] mx-auto overflow-hidden">
+        <div className="absolute inset-y-0 left-0 w-1/6 md:w-1/4 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-1/6 md:w-1/4 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
         <motion.div
           className="flex w-max"
